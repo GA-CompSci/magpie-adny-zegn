@@ -19,7 +19,7 @@ public class Magpie
 	 */
 	public String getGreeting()
 	{
-		return "Hello, let's talk.";
+		return "Yo, let's talk.";
 	}
 	
 	/**
@@ -31,17 +31,44 @@ public class Magpie
 	 */
 	public String getResponse(String statement)
 	{
+		// Initialize response
 		String response = "";
-		if (statement.indexOf("no") >= 0)
+
+		// Reticence
+		if (statement.trim().length() == 0)
+		{
+			response = "Speak up, bozo.";
+		}
+
+		// Refusal
+		else if (statement.indexOf("no") >= 0)
 		{
 			response = "Why so negative?";
 		}
+
+		// Familial ties
 		else if (statement.indexOf("mother") >= 0
 				|| statement.indexOf("father") >= 0
 				|| statement.indexOf("sister") >= 0
 				|| statement.indexOf("brother") >= 0)
 		{
 			response = "Tell me more about your family.";
+		}
+
+		// Pets
+		else if (statement.indexOf("cat") >= 0
+				|| statement.indexOf("dog") >= 0
+				|| statement.indexOf("fish") >= 0
+				|| statement.indexOf("turtle") >= 0)
+		{
+			response = "Tell me more about your pets.";
+		}
+
+		// Mr A
+		else if (statement.indexOf("Adiletta") != -1
+				|| statement.indexOf("Mr. A") != -1)
+		{
+			response = "Sounds as if this gentleman is in fact unfathomably based.";
 		}
 		else
 		{
