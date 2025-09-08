@@ -53,6 +53,11 @@ public class StringExplorer
             System.out.println(sample.substring(0, 5));
       
         // equals
+            String str1 = "Decode";
+            String str2 = "Decode";
 
+            System.out.println("Decode == Decode: " + str1 == str2);   // Somehow prints only false, without concatenation
+            System.out.println("Decode == Decode: " + (str1 == str2)); // Does in fact concatenate, but (str1 == str2) returns true instead!
+            System.out.println("Decode.equals(Decode): " + str1.equals(str2));
 	}
 }
