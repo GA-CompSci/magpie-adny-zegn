@@ -29,7 +29,7 @@ public class Magpie
 	 *            the user statement
 	 * @return a response based on the rules given
 	 */
-	public String getResponse(String statement)
+	public String getResponse(String statement) 
 	{
 		// Initialize response
 		String response = "";
@@ -41,32 +41,32 @@ public class Magpie
 		}
 
 		// Refusal
-		else if (statement.indexOf("no") >= 0)
+		else if (findKeyword(statement, "no") >= 0)
 		{
 			response = "Why so negative?";
 		}
 
 		// Familial ties
-		else if (statement.indexOf("mother") >= 0
-				|| statement.indexOf("father") >= 0
-				|| statement.indexOf("sister") >= 0
-				|| statement.indexOf("brother") >= 0)
+		else if (findKeyword(statement, "mother") >= 0
+				|| findKeyword(statement, "father") >= 0
+				|| findKeyword(statement, "brother") >= 0
+				|| findKeyword(statement, "sister") >= 0)
 		{
 			response = "Tell me more about your family.";
 		}
 
 		// Pets
-		else if (statement.indexOf("cat") >= 0
-				|| statement.indexOf("dog") >= 0
-				|| statement.indexOf("fish") >= 0
-				|| statement.indexOf("turtle") >= 0)
+		else if (findKeyword(statement, "dog") >= 0
+				|| findKeyword(statement, "cat") >= 0
+				|| findKeyword(statement, "fish") >= 0
+				|| findKeyword(statement, "iguana") >= 0)
 		{
 			response = "Tell me more about your pets.";
 		}
 
 		// Mr A
-		else if (statement.indexOf("Adiletta") != -1
-				|| statement.indexOf("Mr. A") != -1)
+		else if (findKeyword(statement, "Adiletta") != -1
+				|| findKeyword(statement, "Mr. A") != -1)
 		{
 			response = "Sounds as if this gentleman is in fact unfathomably based.";
 		}
@@ -75,6 +75,83 @@ public class Magpie
 			response = getRandomResponse();
 		}
 		return response;
+	} // Close getting responses
+
+	/**
+	 * Search for one word in phrase. The search is not case
+	 * sensitive. This method will check that the given goal
+	 * is not a substring of a longer string (so, for
+	 * example, "I know" does not contain "no").
+	 *
+	 * @param statement the string to search
+	 * @param goal the string to search for
+	 * @param startPos the character of the string to begin the search at
+	 * @return the index of the first occurrence of goal in
+	 *         statement or -1 if it's not found
+	 */
+	private int findKeyword(String statement, String goal, int startPos) {
+		String phrase = statement.trim().toLowerCase();
+		goal = goal.toLowerCase();
+
+		// The only change to incorporate the startPos is in
+		// the line below
+		int psn = phrase.indexOf(goal, startPos);
+
+		// Refinement--make sure the goal isn't part of a
+		// word
+		while (psn >= 0)
+		{
+			// Find the string of length 1 before and after
+			// the word
+			String before = " ", after = " ";
+			if (psn > 0)
+			{
+				before = phrase.substring(psn - 1, psn);
+			}
+			if (psn + goal.length() < phrase.length())
+			{
+				after = phrase.substring(
+						psn + goal.length(),
+						psn + goal.length() + 1);
+			}
+
+			// If before and after aren't letters, we've
+			// found the word
+			if (((before.compareTo("a") < 0) || (before
+					.compareTo("z") > 0)) // before is not a
+											// letter
+					&& ((after.compareTo("a") < 0) || (after
+							.compareTo("z") > 0)))
+			{
+				return psn;
+			}
+
+			// The last position didn't work, so let's find
+			// the next, if there is one.
+			psn = phrase.indexOf(goal, psn + 1);
+
+		}
+
+		return -1;
+	}
+
+	/**
+	 * Search for one word in phrase. The search is not case
+	 * sensitive. This method will check that the given goal
+	 * is not a substring of a longer string (so, for
+	 * example, "I know" does not contain "no"). The search
+	 * begins at the beginning of the string.
+	 * 
+	 * @param statement
+	 *            the string to search
+	 * @param goal
+	 *            the string to search for
+	 * @return the index of the first occurrence of goal in
+	 *         statement or -1 if it's not found
+	 */
+	private int findKeyword(String statement, String goal)
+	{
+		return findKeyword(statement, goal, 0);
 	}
 	
 	/**
